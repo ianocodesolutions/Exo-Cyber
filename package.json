@@ -1,0 +1,9 @@
+{
+  "name": "livre-dor-studeria",
+  "version": "1.0.0",
+  "description": "Livre d'or de l'atelier Studeria",
+  "dependencies": {
+    "jquery": "3.4.1",
+    "@supabase/supabase-js": "2.45.4"
+  }
+}

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administration - Livre d'or</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Espace administrateur</h1>
+    <form id="form-login" class="carte">
+      <label>Mot de passe <input id="mdp" type="password" required></label>
+      <button type="submit">Entrer</button>
+      <p id="erreur"></p>
+    </form>
+    <section id="zone-admin" style="display:none">
+      <h2>Inscrits</h2>
+      <table id="table-inscrits"></table>
+      <h2>Messages</h2>
+      <div id="admin-messages"></div>
+    </section>
+    <p class="pied"><a href="index.html">Retour au livre d'or</a></p>
+  </main>
+  <script>
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    $("#form-login").on("submit", function (e) {
+      e.preventDefault();
+      if ($("#mdp").val() === ADMIN_PASSWORD) {
+        $("#form-login").hide();
+        $("#zone-admin").show();
+        chargerAdmin();
+      } else {
+        $("#erreur").html("Mot de passe incorrect");
+      }
+    });
+
+    async function chargerAdmin() {
+      const { data: inscrits } = await db.from("inscrits").select("*");
+      let t = "<tr><th>Prénom</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Adresse</th></tr>";
+      (inscrits || []).forEach(function (i) {
+        t += "<tr><td>" + i.prenom + "</td><td>" + i.nom + "</td><td>" + i.email + "</td><td>" + (i.telephone || "") + "</td><td>" + (i.adresse || "") + "</td></tr>";
+      });
+      $("#table-inscrits").html(t);
+
+      const { data: messages } = await db.from("messages").select("*");
+      let h = "";
+      (messages || []).forEach(function (m) {
+        h += '<div class="message"><strong>' + m.pseudo + "</strong> : " + m.contenu +
+             ' <button onclick="supprimer(' + m.id + ')">Supprimer</button></div>';
+      });
+      $("#admin-messages").html(h);
+    }
+
+    async function supprimer(id) {
+      await db.from("messages").delete().eq("id", id);
+      chargerAdmin();
+    }
+  </script>
+</body>
+</html>

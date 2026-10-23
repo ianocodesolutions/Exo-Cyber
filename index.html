@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Livre d'or - Atelier Studeria</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <main>
+    <h1>Livre d'or</h1>
+    <p class="sous-titre">Laissez un mot sur l'atelier</p>
+
+    <form id="form-message" class="carte">
+      <label>Votre prénom <input id="pseudo" required></label>
+      <label>Votre message <textarea id="contenu" rows="3" required></textarea></label>
+      <button type="submit">Publier</button>
+    </form>
+
+    <section id="liste" class="liste"></section>
+
+    <form id="form-inscription" class="carte">
+      <h2>Recevoir les prochaines dates</h2>
+      <div class="ligne">
+        <label>Prénom <input id="prenom" required></label>
+        <label>Nom <input id="nom" required></label>
+      </div>
+      <label>Email <input id="email" type="email" required></label>
+      <label>Téléphone <input id="telephone"></label>
+      <label>Adresse <input id="adresse"></label>
+      <button type="submit">M'inscrire</button>
+      <p id="confirmation"></p>
+    </form>
+
+    <p class="pied"><a href="admin.html">Espace administrateur</a></p>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
